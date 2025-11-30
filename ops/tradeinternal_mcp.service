@@ -1,0 +1,17 @@
+[Unit]
+Description=Tradeinternal MCP FastAPI/MCP Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=svc-tradeinternal
+Group=svc-tradeinternal
+WorkingDirectory=/opt/mcp/tradeinternal-mcp
+EnvironmentFile=/opt/mcp/tradeinternal-mcp/.env
+ExecStart=/opt/mcp/tradeinternal-mcp/.venv/bin/uvicorn tradeinternal_mcp_server.api:app --host 0.0.0.0 --port 9000
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

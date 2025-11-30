@@ -1,0 +1,17 @@
+[Unit]
+Description=Tradeinternal MCP FastAPI/MCP Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mavula
+Group=mavula
+WorkingDirectory=/opt//tradeinternal-mcp
+EnvironmentFile=/home/mavula/tradeinternal-mcp/.env
+ExecStart=/home/mavula/tradeinternal-mcp/.venv/bin/uvicorn tradeinternal_mcp_server.api:app --host 0.0.0.0 --port 9000
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
