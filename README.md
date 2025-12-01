@@ -125,3 +125,7 @@ Fetches EMA values from the `tradingview_ema` table.
 | `end_timestamp` | optional | Inclusive upper bound in `YYYY-MM-DD HH:MM:SS` |
 
 Responses include `start_timestamp`, `end_timestamp`, `count`, and an `ema` array with `e_id`, `symbol`, `time_frame`, `timestamp`, `date_time`, and EMA columns (20/50/100/200). The FastAPI wrapper exposes this under `GET /ema` with matching query parameters.
+
+### Tool: `get_current_date`
+
+Returns the current server date in `YYYY-MM-DD` format. Useful for dynamically building time filters when calling the other tools.

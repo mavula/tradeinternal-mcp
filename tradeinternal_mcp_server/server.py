@@ -100,6 +100,10 @@ class EmaResponse(TypedDict):
     ema: list[EmaRow]
 
 
+class CurrentDateResponse(TypedDict):
+    current_date: str
+
+
 server = FastMCP(
     "tradingview-candle-server",
     instructions=(
@@ -108,6 +112,7 @@ server = FastMCP(
         "Use get_volume_footprint to retrieve POC/VAH/VAL/volume delta, levels, totals, and diffs from tradingview_volume_footprint. "
         "Use get_cvd to retrieve CVD candles from tradingview_candle_cvd. "
         "Use get_ema to retrieve EMA values from tradingview_ema. "
+        "Use get_current_date to retrieve the server's current date (YYYY-MM-DD). "
         "Timestamps are returned as ISO-8601 strings and the data is sorted "
         "chronologically."
     ),
@@ -281,6 +286,14 @@ def get_ema(
         end_timestamp=end_timestamp,
     )
     return format_ema_response(rows)
+
+
+@server.tool()
+def get_current_date() -> CurrentDateResponse:
+    """Return today's date in ISO format."""
+
+    today = dt.date.today()
+    return {"current_date": today.isoformat()}
 
 
 def _format_timestamp(value: Optional[str]) -> Optional[str]:
