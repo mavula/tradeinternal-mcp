@@ -129,3 +129,7 @@ Responses include `start_timestamp`, `end_timestamp`, `count`, and an `ema` arra
 ### Tool: `get_current_date`
 
 Returns the current server date in `YYYY-MM-DD` format. Useful for dynamically building time filters when calling the other tools.
+
+### Tool: `compare_dates`
+
+Compare a requested date to a provided current date and return whether the requested date is `past`, `today`, or `future`. Both dates must be supplied in `YYYY-MM-DD` format.

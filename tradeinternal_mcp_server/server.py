@@ -104,6 +104,10 @@ class CurrentDateResponse(TypedDict):
     current_date: str
 
 
+class CompareDatesResponse(TypedDict):
+    relation: str
+
+
 server = FastMCP(
     "tradingview-candle-server",
     instructions=(
@@ -113,6 +117,7 @@ server = FastMCP(
         "Use get_cvd to retrieve CVD candles from tradingview_candle_cvd. "
         "Use get_ema to retrieve EMA values from tradingview_ema. "
         "Use get_current_date to retrieve the server's current date (YYYY-MM-DD). "
+        "Use compare_dates to compare a requested date to the current date and receive whether it is past, today, or future. "
         "Timestamps are returned as ISO-8601 strings and the data is sorted "
         "chronologically."
     ),
@@ -294,6 +299,29 @@ def get_current_date() -> CurrentDateResponse:
 
     today = dt.date.today()
     return {"current_date": today.isoformat()}
+
+
+@server.tool()
+def compare_dates(
+    requested_date: Annotated[str, "Requested date in ISO format YYYY-MM-DD."],
+    current_date: Annotated[str, "Current date in ISO format YYYY-MM-DD."],
+) -> CompareDatesResponse:
+    """Compare the requested date to the provided current date."""
+
+    try:
+        requested = dt.date.fromisoformat(requested_date)
+        current = dt.date.fromisoformat(current_date)
+    except ValueError as exc:
+        raise ValueError("Dates must be in ISO format YYYY-MM-DD.") from exc
+
+    if requested == current:
+        relation = "today"
+    elif requested < current:
+        relation = "past"
+    else:
+        relation = "future"
+
+    return {"relation": relation}
 
 
 def _format_timestamp(value: Optional[str]) -> Optional[str]:

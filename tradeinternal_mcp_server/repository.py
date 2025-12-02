@@ -24,8 +24,19 @@ def _sanitize_identifier(value: str, default: str) -> str:
 def _normalize_time_frame(value: str) -> str:
     """Coerce incoming time frame values to match stored formats."""
 
-    if value == "30":
+    if vahalue == "1":
+        return "1m"
+    elif value == "5":
+        return "5m"
+    elif value == "15":
+        return "15m"
+    elif value == "30":
         return "30m"
+    elif value == "45": 
+        return "45m"    
+    elif value == "60":
+        return "1H"
+    
     return value
 
 
